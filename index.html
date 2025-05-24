@@ -23,6 +23,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
+            max-width: 500px;
         }
         
         h1 {
@@ -68,13 +69,156 @@
                 transform: translateY(-5px);
             }
         }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .count-display {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .message {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            min-height: 1.3em;
+        }
+
+        .celebrating {
+            animation: celebrate 0.5s ease-in-out;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hello Claude!</h1>
-        <div class="emoji">🤖</div>
-        <p class="subtitle">シンプルなWebページへようこそ</p>
-    </div>
+    <div id="root"></div>
+
+    <!-- React 18 CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function App() {
+            const [count, setCount] = useState(0);
+            const [currentEmoji, setCurrentEmoji] = useState('🤖');
+            const [message, setMessage] = useState('シンプルなWebページへようこそ');
+            const [isCelebrating, setIsCelebrating] = useState(false);
+
+            const emojis = ['🤖', '🎉', '⭐', '🚀', '💎', '🌟', '🎊', '✨'];
+
+            const incrementCount = () => {
+                const newCount = count + 1;
+                setCount(newCount);
+                
+                if (newCount % 5 === 0) {
+                    triggerCelebration();
+                    setMessage(`すごい！${newCount}回もクリックしました！🎉`);
+                } else {
+                    setMessage(`カウント: ${newCount} - 頑張って！`);
+                }
+            };
+
+            const changeEmoji = () => {
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                setCurrentEmoji(randomEmoji);
+                setMessage('絵文字が変わりました！ ✨');
+            };
+
+            const triggerCelebration = () => {
+                setIsCelebrating(true);
+                let emojiIndex = 0;
+                const celebrationInterval = setInterval(() => {
+                    setCurrentEmoji(emojis[emojiIndex % emojis.length]);
+                    emojiIndex++;
+                }, 250);
+
+                setTimeout(() => {
+                    clearInterval(celebrationInterval);
+                    setIsCelebrating(false);
+                    setCurrentEmoji('🎉');
+                }, 2000);
+            };
+
+            const resetAll = () => {
+                setCount(0);
+                setCurrentEmoji('🤖');
+                setMessage('リセットしました！新しくスタート 🔄');
+                setIsCelebrating(false);
+            };
+
+            return (
+                <div className="container">
+                    <h1>Hello Claude!</h1>
+                    <div className={`emoji ${isCelebrating ? 'celebrating' : ''}`}>
+                        {currentEmoji}
+                    </div>
+                    <p className="subtitle">Reactで動的な機能付き！</p>
+                    
+                    <div className="count-display">
+                        カウント: {count}
+                    </div>
+                    
+                    <div className="message">
+                        {message}
+                    </div>
+
+                    <div className="button-container">
+                        <button onClick={incrementCount}>
+                            カウントアップ ⬆️
+                        </button>
+                        <button onClick={changeEmoji}>
+                            絵文字変更 🔄
+                        </button>
+                        <button onClick={triggerCelebration}>
+                            お祝いモード 🎊
+                        </button>
+                        <button onClick={resetAll}>
+                            リセット 🔄
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
