@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <!-- 基本的なメタ情報の設定 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello Claude!</title>
+    <!-- カスタムスタイル定義 -->
     <style>
+        /* メインコンテナのスタイル設定 */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -16,6 +19,7 @@
             align-items: center;
         }
         
+        /* メインコンテンツエリアのスタイル */
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.9);
@@ -26,6 +30,7 @@
             min-width: 400px;
         }
         
+        /* タイトルのスタイル */
         h1 {
             color: #333;
             font-size: 3rem;
@@ -41,6 +46,7 @@
             animation: fadeInUp 1s ease-out 0.3s both;
         }
         
+        /* フェードインアニメーション */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -58,6 +64,7 @@
             animation: bounce 2s infinite;
         }
         
+        /* バウンスアニメーション */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
                 transform: translateY(0);
@@ -70,6 +77,7 @@
             }
         }
 
+        /* ボタンコンテナのレイアウト */
         .button-container {
             margin-top: 30px;
             display: flex;
@@ -78,6 +86,7 @@
             flex-wrap: wrap;
         }
 
+        /* ダイナミックボタンのスタイル */
         .dynamic-button {
             padding: 12px 24px;
             font-size: 1rem;
@@ -91,15 +100,18 @@
             font-weight: bold;
         }
 
+        /* ボタンのホバー効果 */
         .dynamic-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* ボタンのアクティブ状態 */
         .dynamic-button:active {
             transform: translateY(0);
         }
 
+        /* カウンター表示のスタイル */
         .counter {
             font-size: 1.5rem;
             margin: 20px 0;
@@ -107,12 +119,14 @@
             font-weight: bold;
         }
 
+        /* 絵文字表示エリア */
         .emoji-display {
             font-size: 3rem;
             margin: 20px 0;
             transition: all 0.3s ease;
         }
 
+        /* メッセージエリアのスタイル */
         .message {
             margin: 15px 0;
             padding: 10px;
@@ -124,6 +138,7 @@
     </style>
 </head>
 <body>
+    <!-- Reactアプリケーションのルート要素 -->
     <div id="root"></div>
 
     <!-- React CDN -->
@@ -131,12 +146,16 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <!-- Reactコンポーネントの定義 -->
     <script type="text/babel">
+        // メインのReactコンポーネント
         function App() {
+            // 状態管理用のフック
             const [count, setCount] = React.useState(0);
             const [emoji, setEmoji] = React.useState('🤖');
             const [message, setMessage] = React.useState('シンプルなWebページへようこそ');
             
+            // 絵文字とメッセージの配列
             const emojis = ['🤖', '🎉', '⭐', '🚀', '💖', '🌟', '🎊', '🔥'];
             const messages = [
                 'シンプルなWebページへようこそ',
@@ -149,15 +168,18 @@
                 'Claude と一緒に学習中'
             ];
 
+            // カウンターを増加させる関数
             const incrementCounter = () => {
                 setCount(prev => prev + 1);
                 setMessage(messages[Math.floor(Math.random() * messages.length)]);
             };
 
+            // 絵文字をランダムに変更する関数
             const changeEmoji = () => {
                 setEmoji(emojis[Math.floor(Math.random() * emojis.length)]);
             };
 
+            // 全ての状態をリセットする関数
             const resetAll = () => {
                 setCount(0);
                 setEmoji('🤖');
@@ -167,6 +189,7 @@
                 }, 2000);
             };
 
+            // お祝いモードのアニメーション関数
             const celebrateMode = () => {
                 let counter = 0;
                 const interval = setInterval(() => {
@@ -181,20 +204,24 @@
                 setMessage('お祝いモード開始！');
             };
 
+            // JSXでUIを構築
             return (
                 <div className="container">
                     <h1>Hello Claude!</h1>
                     <div className="emoji-display">{emoji}</div>
                     <p className="subtitle">React で動的なWebページ</p>
                     
+                    {/* カウンター表示エリア */}
                     <div className="counter">
                         カウンター: {count}
                     </div>
                     
+                    {/* メッセージ表示エリア */}
                     <div className="message">
                         {message}
                     </div>
 
+                    {/* ボタンコンテナ */}
                     <div className="button-container">
                         <button 
                             className="dynamic-button" 
@@ -228,6 +255,7 @@
             );
         }
 
+        // Reactアプリケーションのレンダリング
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
