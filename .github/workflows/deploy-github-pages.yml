@@ -26,7 +26,7 @@ jobs:
           
       - name: Install dependencies
         working-directory: Statistical_thinking
-        run: npm ci
+        run: npm install
         
       - name: Build with Slidev
         working-directory: Statistical_thinking
