@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- 基本的なメタ情報の設定 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Claude!</title>
+    <!-- カスタムスタイル定義 -->
+    <style>
+        /* メインコンテナのスタイル設定 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* メインコンテンツエリアのスタイル */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            min-width: 400px;
+        }
+        
+        /* タイトルのスタイル */
+        h1 {
+            color: #333;
+            font-size: 3rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        
+        /* フェードインアニメーション */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .emoji {
+            font-size: 2rem;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        /* バウンスアニメーション */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* ボタンコンテナのレイアウト */
+        .button-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ダイナミックボタンのスタイル */
+        .dynamic-button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        /* ボタンのホバー効果 */
+        .dynamic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ボタンのアクティブ状態 */
+        .dynamic-button:active {
+            transform: translateY(0);
+        }
+
+        /* カウンター表示のスタイル */
+        .counter {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* 絵文字表示エリア */
+        .emoji-display {
+            font-size: 3rem;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* メッセージエリアのスタイル */
+        .message {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Reactアプリケーションのルート要素 -->
+    <div id="root"></div>
+
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Reactコンポーネントの定義 -->
+    <script type="text/babel">
+        // メインのReactコンポーネント
+        function App() {
+            // 状態管理用のフック
+            const [count, setCount] = React.useState(0);
+            const [emoji, setEmoji] = React.useState('🤖');
+            const [message, setMessage] = React.useState('シンプルなWebページへようこそ');
+            
+            // 絵文字とメッセージの配列
+            const emojis = ['🤖', '🎉', '⭐', '🚀', '💖', '🌟', '🎊', '🔥'];
+            const messages = [
+                'シンプルなWebページへようこそ',
+                'ボタンを押してみてください！',
+                'React で動的に更新中',
+                'カウンターが増えています',
+                'すばらしい！',
+                'もっと押してみてください',
+                'React は楽しいですね',
+                'Claude と一緒に学習中'
+            ];
+
+            // カウンターを増加させる関数
+            const incrementCounter = () => {
+                setCount(prev => prev + 1);
+                setMessage(messages[Math.floor(Math.random() * messages.length)]);
+            };
+
+            // 絵文字をランダムに変更する関数
+            const changeEmoji = () => {
+                setEmoji(emojis[Math.floor(Math.random() * emojis.length)]);
+            };
+
+            // 全ての状態をリセットする関数
+            const resetAll = () => {
+                setCount(0);
+                setEmoji('🤖');
+                setMessage('リセットしました！');
+                setTimeout(() => {
+                    setMessage('シンプルなWebページへようこそ');
+                }, 2000);
+            };
+
+            // お祝いモードのアニメーション関数
+            const celebrateMode = () => {
+                let counter = 0;
+                const interval = setInterval(() => {
+                    setEmoji(emojis[Math.floor(Math.random() * emojis.length)]);
+                    counter++;
+                    if (counter >= 10) {
+                        clearInterval(interval);
+                        setEmoji('🎉');
+                        setMessage('お祝いモード完了！');
+                    }
+                }, 200);
+                setMessage('お祝いモード開始！');
+            };
+
+            // JSXでUIを構築
+            return (
+                <div className="container">
+                    <h1>Hello Claude!</h1>
+                    <div className="emoji-display">{emoji}</div>
+                    <p className="subtitle">React で動的なWebページ</p>
+                    
+                    {/* カウンター表示エリア */}
+                    <div className="counter">
+                        カウンター: {count}
+                    </div>
+                    
+                    {/* メッセージ表示エリア */}
+                    <div className="message">
+                        {message}
+                    </div>
+
+                    {/* ボタンコンテナ */}
+                    <div className="button-container">
+                        <button 
+                            className="dynamic-button" 
+                            onClick={incrementCounter}
+                        >
+                            カウント +1
+                        </button>
+                        
+                        <button 
+                            className="dynamic-button" 
+                            onClick={changeEmoji}
+                        >
+                            絵文字変更
+                        </button>
+                        
+                        <button 
+                            className="dynamic-button" 
+                            onClick={celebrateMode}
+                        >
+                            お祝いモード
+                        </button>
+                        
+                        <button 
+                            className="dynamic-button" 
+                            onClick={resetAll}
+                        >
+                            リセット
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Reactアプリケーションのレンダリング
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
