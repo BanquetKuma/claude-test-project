@@ -10,6 +10,37 @@ st.set_page_config(
     layout="wide"
 )
 
+# Add CSS for Japanese font support
+st.markdown("""
+<style>
+html, body, [class*="css"] {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic', 'Meiryo', 'Yu Gothic', 'MS PGothic', sans-serif;
+}
+
+.main .block-container {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic', 'Meiryo', 'Yu Gothic', 'MS PGothic', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic', 'Meiryo', 'Yu Gothic', 'MS PGothic', sans-serif !important;
+}
+
+.stMetric label, .stMetric div {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic', 'Meiryo', 'Yu Gothic', 'MS PGothic', sans-serif !important;
+}
+
+.stTab {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic', 'Meiryo', 'Yu Gothic', 'MS PGothic', sans-serif !important;
+}
+
+/* Additional CSS to ensure proper Japanese character rendering */
+* {
+    -webkit-font-feature-settings: "palt";
+    font-feature-settings: "palt";
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.title("📈 トヨタ自動車 (TM) リアルタイム株価モニター")
 
 @st.cache_data(ttl=60)
