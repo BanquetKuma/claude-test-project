@@ -1,76 +1,177 @@
-# Claude Test Project
+# 株価モニタリング アプリケーション
 
-## Stock Price Monitoring Applications
+## プロジェクト概要
 
-This repository contains real-time Streamlit applications for monitoring stock prices with interactive charts and key financial metrics.
+このリポジトリには、インタラクティブなチャートと主要な財務指標を備えた株価モニタリング用のリアルタイム Streamlit アプリケーションが含まれています。
 
-### Tesla Stock Price Monitor
+## アプリケーション
 
-A real-time Streamlit application that displays Tesla (TSLA) stock price information with interactive charts and key financial metrics.
+### Tesla 株価モニター
 
-### Toyota Stock Price Monitor (トヨタ自動車株価モニター)
+Tesla (TSLA) の株価情報をインタラクティブなチャートと主要財務指標で表示するリアルタイム Streamlit アプリケーションです。
 
-A real-time Streamlit application that displays Toyota Motor Corporation (TM) stock price information with Japanese localization and interactive charts.
+### トヨタ自動車株価モニター
 
-### Features
+トヨタ自動車株式会社 (TM) の株価情報を日本語UIとインタラクティブなチャートで表示するリアルタイム Streamlit アプリケーションです。
 
-**Tesla Stock App:**
-- 📈 Real-time Tesla (TSLA) stock price updates
-- 📊 Intraday price movement charts
-- 📈 30-day historical data with candlestick charts
-- 💰 Key financial metrics (market cap, volume, statistics)
-- 🔄 Auto-refresh every 30 seconds
-- 📱 Responsive design
+## 機能
 
-**Toyota Stock App (トヨタ自動車アプリ):**
-- 📈 Real-time Toyota Motor Corporation (TM) stock price updates
-- 📊 Intraday price movement charts with Japanese localization
-- 📈 30-day historical data with candlestick charts
-- 💰 Key financial metrics (market cap, volume, statistics)
-- 🔄 Auto-refresh every 30 seconds with Japanese UI
-- 📱 Responsive design with Japanese text support
+### Tesla 株価アプリ
+- 📈 Tesla (TSLA) のリアルタイム株価更新
+- 📊 日中価格推移チャート  
+- 📈 30日間の履歴データとローソク足チャート
+- 💰 主要財務指標（時価総額、出来高、統計）
+- 🔄 手動更新機能
+- 📱 レスポンシブデザイン
 
-### Installation & Setup
+### トヨタ自動車株価アプリ
+- 📈 トヨタ自動車株式会社 (TM) のリアルタイム株価更新
+- 📊 日本語ローカライゼーション対応の日中価格推移チャート
+- 📈 30日間の履歴データとローソク足チャート  
+- 💰 日本語表示の主要財務指標（時価総額、出来高、統計）
+- 🔄 日本語UI での手動更新機能（"今すぐ更新"）
+- 📱 日本語テキストサポート対応のレスポンシブデザイン
+- 🎌 完全な日本語ローカライゼーション
 
-1. Clone this repository
-2. Install the required dependencies:
+## インストールと設定
+
+### 前提条件
+- Python 3.8 以上
+- pip パッケージマネージャー
+- インターネット接続（株価データ取得用）
+
+### ステップバイステップのインストール手順
+
+1. **リポジトリのクローン**
+   ```bash
+   git clone https://github.com/BanquetKuma/claude-test-project.git
+   cd claude-test-project
+   ```
+
+2. **Python 仮想環境の作成（推奨）**
+   ```bash
+   # Windows
+   python -m venv venv
+   venv\Scripts\activate
+   
+   # macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **依存関係のインストール**
    ```bash
    pip install -r requirements.txt
    ```
 
-### Running the Applications
+## アプリケーションの実行方法
 
-To start the Tesla stock app:
+### Tesla 株価アプリの実行
 
 ```bash
 streamlit run tesla_stock_app.py
 ```
 
-To start the Toyota stock app:
+### トヨタ自動車株価アプリの実行
 
 ```bash
 streamlit run toyota_stock_app.py
 ```
 
-The apps will open in your browser at `http://localhost:8501` (or next available port)
+### アクセス方法
 
-### Usage
+実行後、ターミナルに表示される以下のような情報を確認してください：
 
-**Tesla Stock App:**
-- The app automatically refreshes every 30 seconds
-- Use the "🔄 Refresh Now" button for manual updates
-- Switch between "Today's Trading" and "30-Day History" tabs
-- View additional information and settings in the sidebar
+```
+You can now view your Streamlit app in your browser.
 
-**Toyota Stock App:**
-- 30秒ごとに自動更新されます (Auto-refreshes every 30 seconds)
-- 手動更新には "🔄 今すぐ更新" ボタンを使用 (Use "🔄 今すぐ更新" button for manual updates)
-- "本日の取引" と "30日間の履歴" タブを切り替え (Switch between "Today's Trading" and "30-Day History" tabs)
-- サイドバーで追加情報と設定を確認 (View additional information and settings in the sidebar)
+Local URL: http://localhost:8501
+Network URL: http://192.168.1.xxx:8501
+```
 
-### Data Source
+ブラウザで `http://localhost:8501` にアクセスするとアプリケーションが表示されます。
 
-These applications use Yahoo Finance API through the `yfinance` library to fetch real-time and historical stock data for Tesla (TSLA) and Toyota Motor Corporation (TM).
+### ポートの競合について
 
-**Disclaimer:** This data is for informational purposes only and should not be used for investment decisions.
-**免責事項:** このデータは情報提供のみを目的としており、投資判断に使用すべきではありません。
+既に 8501 ポートが使用されている場合、Streamlit は自動的に次の利用可能なポート（8502、8503など）を使用します。
+
+## 使用方法
+
+### Tesla 株価アプリの使い方
+
+1. **リアルタイム情報の確認**
+   - 現在価格、前日終値、出来高が画面上部に表示されます
+   - 価格変動は色分けされて表示されます（上昇：緑、下落：赤）
+
+2. **手動更新**
+   - "🔄 Refresh Now" ボタンで手動更新が可能です
+
+3. **チャートの切り替え**
+   - "Today's Trading" タブ：当日の取引データ
+   - "30-Day History" タブ：30日間の履歴データ
+
+4. **サイドバー**
+   - アプリの説明と設定オプション
+   - キャッシュクリア機能
+
+### トヨタ自動車株価アプリの使い方
+
+1. **リアルタイム情報の確認**
+   - 現在価格（現在価格）、前日終値、出来高が日本語で表示されます
+   - 時価総額も確認できます
+
+2. **手動更新**
+   - "🔄 今すぐ更新" ボタンで手動更新が可能です
+
+3. **チャートの切り替え**
+   - "📊 本日の取引" タブ：当日の取引データ
+   - "📈 30日間の履歴" タブ：30日間の履歴データとローソク足チャート
+
+4. **統計情報**
+   - 30日高値、30日安値、30日平均、ボラティリティ（σ）
+
+5. **サイドバー**
+   - 日本語でのアプリ説明
+   - "キャッシュをクリア" 機能
+
+## トラブルシューティング
+
+### よくある問題と解決方法
+
+1. **パッケージインストールエラー**
+   ```bash
+   pip install --upgrade pip
+   pip install -r requirements.txt --force-reinstall
+   ```
+
+2. **ポート競合エラー**
+   - 別のポートを指定して実行：
+   ```bash
+   streamlit run toyota_stock_app.py --server.port 8502
+   ```
+
+3. **日本語文字が文字化けする場合**
+   - ブラウザのエンコーディング設定を UTF-8 に設定
+   - ブラウザのキャッシュをクリア
+
+4. **株価データが取得できない場合**
+   - インターネット接続を確認
+   - "今すぐ更新" / "Refresh Now" ボタンを押して再試行
+
+## データソース
+
+これらのアプリケーションは、`yfinance` ライブラリを通じて Yahoo Finance API を使用し、Tesla (TSLA) とトヨタ自動車株式会社 (TM) のリアルタイムおよび履歴株価データを取得します。
+
+## システム要件
+
+- **OS**: Windows 10/11, macOS 10.14+, Linux
+- **Python**: 3.8 以上
+- **メモリ**: 最小 4GB RAM（8GB 推奨）
+- **ディスク容量**: 100MB 以上の空き容量
+- **ブラウザ**: Chrome, Firefox, Safari, Edge の最新版
+
+## 免責事項
+
+**重要**: このデータは情報提供のみを目的としており、投資判断に使用すべきではありません。投資に関する決定は、必ず専門家にご相談ください。
+
+このアプリケーションによって提供される情報の正確性、完全性、適時性について保証するものではありません。株式投資にはリスクが伴います。
