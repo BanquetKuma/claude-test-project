@@ -3,7 +3,6 @@ import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
-import time
 
 st.set_page_config(
     page_title="Toyota Stock Price Monitor",
@@ -45,126 +44,118 @@ def get_toyota_data():
 # Main app layout
 col1, col2, col3 = st.columns([2, 1, 1])
 
-# Auto-refresh every 30 seconds
-placeholder = st.empty()
-
 # Add refresh button
 if st.button("🔄 今すぐ更新"):
     st.cache_data.clear()
 
-# Create placeholder for dynamic content
-with placeholder.container():
-    data = get_toyota_data()
+# Main content area
+data = get_toyota_data()
+
+if data:
+    current_price = data['current_price']
+    previous_close = data['previous_close']
+    price_change = current_price - previous_close
+    price_change_pct = (price_change / previous_close) * 100 if previous_close != 0 else 0
     
-    if data:
-        current_price = data['current_price']
-        previous_close = data['previous_close']
-        price_change = current_price - previous_close
-        price_change_pct = (price_change / previous_close) * 100 if previous_close != 0 else 0
-        
-        # Display current price and change
-        with col1:
-            st.metric(
-                label="現在価格 (USD)",
-                value=f"${current_price:.2f}",
-                delta=f"{price_change:+.2f} ({price_change_pct:+.2f}%)"
-            )
-        
-        with col2:
-            st.metric(
-                label="前日終値",
-                value=f"${previous_close:.2f}"
-            )
-        
-        with col3:
-            st.metric(
-                label="出来高",
-                value=f"{data['volume']:,}"
-            )
-        
-        # Display market cap
-        if data['market_cap'] > 0:
-            market_cap_b = data['market_cap'] / 1e9
-            st.metric(
-                label="時価総額",
-                value=f"${market_cap_b:.1f}B"
-            )
-        
-        # Create tabs for different views
-        tab1, tab2 = st.tabs(["📊 本日の取引", "📈 30日間の履歴"])
-        
-        with tab1:
-            st.subheader("日中株価推移")
-            if not data['today_data'].empty:
-                fig_today = go.Figure()
-                fig_today.add_trace(go.Scatter(
-                    x=data['today_data'].index,
-                    y=data['today_data']['Close'],
-                    mode='lines',
-                    name='価格',
-                    line=dict(color='#DC143C', width=2)
-                ))
-                
-                fig_today.update_layout(
-                    title="トヨタ自動車株価 - 本日",
-                    xaxis_title="時刻",
-                    yaxis_title="価格 (USD)",
-                    height=400,
-                    showlegend=False
-                )
-                
-                st.plotly_chart(fig_today, use_container_width=True)
-            else:
-                st.info("日中データが利用できません（市場が閉まっている可能性があります）")
-        
-        with tab2:
-            st.subheader("30日間の履歴データ")
-            if not data['historical_data'].empty:
-                fig_hist = go.Figure()
-                
-                # Candlestick chart
-                fig_hist.add_trace(go.Candlestick(
-                    x=data['historical_data'].index,
-                    open=data['historical_data']['Open'],
-                    high=data['historical_data']['High'],
-                    low=data['historical_data']['Low'],
-                    close=data['historical_data']['Close'],
-                    name='TM'
-                ))
-                
-                fig_hist.update_layout(
-                    title="トヨタ自動車株価 - 30日間",
-                    xaxis_title="日付",
-                    yaxis_title="価格 (USD)",
-                    height=500
-                )
-                
-                st.plotly_chart(fig_hist, use_container_width=True)
-                
-                # Show some statistics
-                st.subheader("30日間統計")
-                col1, col2, col3, col4 = st.columns(4)
-                
-                hist_data = data['historical_data']['Close']
-                with col1:
-                    st.metric("30日高値", f"${hist_data.max():.2f}")
-                with col2:
-                    st.metric("30日安値", f"${hist_data.min():.2f}")
-                with col3:
-                    st.metric("30日平均", f"${hist_data.mean():.2f}")
-                with col4:
-                    volatility = hist_data.std()
-                    st.metric("ボラティリティ (σ)", f"${volatility:.2f}")
-        
-        # Last updated timestamp
-        st.caption(f"最終更新: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
-        # Auto-refresh every 30 seconds
-        time.sleep(30)
-        st.rerun()
+    # Display current price and change
+    with col1:
+        st.metric(
+            label="現在価格 (USD)",
+            value=f"${current_price:.2f}",
+            delta=f"{price_change:+.2f} ({price_change_pct:+.2f}%)"
+        )
     
-    else:
-        st.error("トヨタ自動車の株価データを取得できませんでした。インターネット接続を確認して再試行してください。")
+    with col2:
+        st.metric(
+            label="前日終値",
+            value=f"${previous_close:.2f}"
+        )
+    
+    with col3:
+        st.metric(
+            label="出来高",
+            value=f"{data['volume']:,}"
+        )
+    
+    # Display market cap
+    if data['market_cap'] > 0:
+        market_cap_b = data['market_cap'] / 1e9
+        st.metric(
+            label="時価総額",
+            value=f"${market_cap_b:.1f}B"
+        )
+    
+    # Create tabs for different views
+    tab1, tab2 = st.tabs(["📊 本日の取引", "📈 30日間の履歴"])
+    
+    with tab1:
+        st.subheader("日中株価推移")
+        if not data['today_data'].empty:
+            fig_today = go.Figure()
+            fig_today.add_trace(go.Scatter(
+                x=data['today_data'].index,
+                y=data['today_data']['Close'],
+                mode='lines',
+                name='価格',
+                line=dict(color='#DC143C', width=2)
+            ))
+            
+            fig_today.update_layout(
+                title="トヨタ自動車株価 - 本日",
+                xaxis_title="時刻",
+                yaxis_title="価格 (USD)",
+                height=400,
+                showlegend=False
+            )
+            
+            st.plotly_chart(fig_today, use_container_width=True)
+        else:
+            st.info("日中データが利用できません（市場が閉まっている可能性があります）")
+    
+    with tab2:
+        st.subheader("30日間の履歴データ")
+        if not data['historical_data'].empty:
+            fig_hist = go.Figure()
+            
+            # Candlestick chart
+            fig_hist.add_trace(go.Candlestick(
+                x=data['historical_data'].index,
+                open=data['historical_data']['Open'],
+                high=data['historical_data']['High'],
+                low=data['historical_data']['Low'],
+                close=data['historical_data']['Close'],
+                name='TM'
+            ))
+            
+            fig_hist.update_layout(
+                title="トヨタ自動車株価 - 30日間",
+                xaxis_title="日付",
+                yaxis_title="価格 (USD)",
+                height=500
+            )
+            
+            st.plotly_chart(fig_hist, use_container_width=True)
+            
+            # Show some statistics
+            st.subheader("30日間統計")
+            col1, col2, col3, col4 = st.columns(4)
+            
+            hist_data = data['historical_data']['Close']
+            with col1:
+                st.metric("30日高値", f"${hist_data.max():.2f}")
+            with col2:
+                st.metric("30日安値", f"${hist_data.min():.2f}")
+            with col3:
+                st.metric("30日平均", f"${hist_data.mean():.2f}")
+            with col4:
+                volatility = hist_data.std()
+                st.metric("ボラティリティ (σ)", f"${volatility:.2f}")
+    
+    # Last updated timestamp
+    st.caption(f"最終更新: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
+else:
+    st.error("トヨタ自動車の株価データを取得できませんでした。インターネット接続を確認して再試行してください。")
 
 # Sidebar with additional info
 with st.sidebar:
